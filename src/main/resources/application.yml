@@ -1,0 +1,24 @@
+server:
+  port: 8101
+
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.1.112:8100/eureka/,http://192.168.1.112:8200/eureka/
+    registry-fetch-interval-seconds: 20  #多久拉取服务注册信息
+  instance:
+
+    # 10s未收到心跳，剔除instance 要比心跳时间大
+    #多少秒未收到心跳，剔除这个服务的时间，默认是90，如果值太大，可能转发过去的时候，服务已经down了，如果值太小，可能是临时的网络问题，服务就被剔除了
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5 # 心跳时间
+    prefer-ip-address: false #是否使用ip地址注册（鼠标指在服务上时，显示的ip地址），否则用主机名，若没有设置ip-address属性，则使用环路ip外的一个ip，默认是fals
+    ip-address: 127.0.0.1
+    hostname: lwk-pc
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}${random.int}:${server.port}
+
+spring:
+  application:
+    name: eurka-client
